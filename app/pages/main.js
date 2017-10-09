@@ -6,7 +6,7 @@ import {
     FlatList,
     TouchableHighlight,
 } from 'react-native';
-import {TabNavigator} from 'react-navigation'
+import {TabNavigator,TabBarBottom} from 'react-navigation'
 
 import TabHomeComponent from './tabhome'
 import TabNewsComponent from './tabnews'
@@ -27,7 +27,11 @@ export const MainTab=TabNavigator({
         screen : TabFindComponent
     }
 },{
+    tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
+    indicatorStyle: {
+        height :0
+    },
     animationEnabled: true,
     tabBarOptions: {
         activeTintColor: '#e91e63',
