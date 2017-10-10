@@ -1,4 +1,4 @@
-package com.reviewrn;
+package com.reviewrn.pain;
 
 import android.app.Application;
 
@@ -7,6 +7,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.reviewrn.pain.BuildConfig;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,11 +23,13 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage()
+          new MainReactPackage(),
+              new MainPackage()
       );
     }
-  };
 
+
+  };
   @Override
   public ReactNativeHost getReactNativeHost() {
     return mReactNativeHost;

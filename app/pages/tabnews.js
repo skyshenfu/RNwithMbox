@@ -70,10 +70,5 @@ const styles = StyleSheet.create({
         width :50,
         height :50,
         backgroundColor: '#f96060'
-    },
-    buttonsgreen: {
-        width :50,
-        height :50,
-        backgroundColor: '#00aa00'
     }
 });

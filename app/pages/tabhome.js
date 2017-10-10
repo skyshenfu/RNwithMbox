@@ -5,7 +5,12 @@ import {
     View,
     FlatList,
     TouchableHighlight,
+    Dimensions
 } from 'react-native';
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
+import CMapCustom  from '../customs/CustomMap'
+
 const title='首页'
 export default class TabHomeComponent extends Component{
     static navigationOptions={
@@ -13,17 +18,14 @@ export default class TabHomeComponent extends Component{
     }
     render(){
         return(
-            <View style={styles.container}>
-                <Text>{title}</Text>
-            </View>
+            <CMapCustom style={styles.container}/>
         )
     }
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        width:ScreenWidth,
+        height:ScreenHeight
     }
 });
