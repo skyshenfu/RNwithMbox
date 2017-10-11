@@ -29,11 +29,13 @@ export const MainTab=TabNavigator({
 },{
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
+    swipeEnabled:false,
+    lazy:true,
     indicatorStyle: {
         height :0
     },
     animationEnabled: true,
     tabBarOptions: {
-        activeTintColor: '#e91e63',
+        activeTintColor: '#00aa63',
     },
 })

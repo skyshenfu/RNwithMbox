@@ -29,6 +29,7 @@ public class MainPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules=new ArrayList<>();
         modules.add(new CustomToast(reactContext));
+        modules.add(new CustomButton(reactContext));
         return modules;
     }
     /**
@@ -39,7 +40,6 @@ public class MainPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
-                new CustomButton(),
                 new CustomAmapManager()
         );
     }
