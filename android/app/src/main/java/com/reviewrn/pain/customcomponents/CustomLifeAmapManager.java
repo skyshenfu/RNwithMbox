@@ -1,7 +1,6 @@
 package com.reviewrn.pain.customcomponents;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.amap.api.location.AMapLocation;
@@ -9,18 +8,20 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
-import com.amap.api.maps2d.AMapOptions;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MyLocationStyle;
-import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.reviewrn.pain.MainActivity;
-import com.reviewrn.pain.extras.OriginActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,13 +34,17 @@ import java.util.Date;
  * 1.每一个自定义的Native控件都需要之策一个管理器
  * 2.管理器的createViewInstance定义了控件的初始方法
  * 3.View大小等通用参数有RN端指定
+ * 4.如果需要和宿主生命周期绑定则实现LifecycleEventListener接口并且reactContext.addLifecycleEventListener(this);
  */
 
-public class CustomAmapManager extends SimpleViewManager<MapView> {
+public class CustomLifeAmapManager extends SimpleViewManager<MapView>  implements LifecycleEventListener{
     private static final String NAME="CMapCustom";
     private AMap aMap;
     private AMapLocationClient mLocationClient = null;
-    private Context mContext;
+    private ThemedReactContext mContext;
+    WritableMap writableMap;
+    private static final String LOCATIONNAME="Loc";
+    private static String LOCATIONNINFO="暂无信息";
     //声明mLocationOption对象，定位参数
     public AMapLocationClientOption mLocationOption = null;
     //声明mListener对象，定位监听器
@@ -56,11 +61,14 @@ public class CustomAmapManager extends SimpleViewManager<MapView> {
     @Override
     protected MapView createViewInstance(ThemedReactContext reactContext) {
         mContext=reactContext;
+        reactContext.addLifecycleEventListener(this);
         return configMap(reactContext);
     }
     private MapView configMap(ThemedReactContext reactContext){
         mapView=new MapView(reactContext);
-        mapView.onCreate(null);
+        //设置开始
+        Log.e("HERE", "configMap:");
+        mapView.onCreate(MainActivity.bundle);
         initLocation();
         return mapView;
 
@@ -139,6 +147,8 @@ public class CustomAmapManager extends SimpleViewManager<MapView> {
                                 + aMapLocation.getDistrict() + ""
                                 + aMapLocation.getStreet() + ""
                                 + aMapLocation.getStreetNum());
+                        LOCATIONNINFO=buffer.toString();
+                        sendEvent(mContext,"showloc");
 
 //                }
 
@@ -159,9 +169,9 @@ public class CustomAmapManager extends SimpleViewManager<MapView> {
         //设置是否返回地址信息（默认返回地址信息）
         mLocationOption.setNeedAddress(true);
         //设置是否只定位一次,默认为false
-        //mLocationOption.setOnceLocation(false);
+        mLocationOption.setOnceLocation(true);
         //设置是否强制刷新WIFI，默认为强制刷新
-        mLocationOption.setWifiScan(true);
+        mLocationOption.setWifiActiveScan(true);
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         mLocationOption.setMockEnable(false);
         //设置定位间隔,单位毫秒,默认为2000ms
@@ -174,10 +184,40 @@ public class CustomAmapManager extends SimpleViewManager<MapView> {
     @Override
     public void onDropViewInstance(MapView view) {
         super.onDropViewInstance(view);
+        mContext.removeLifecycleEventListener(this);
+    }
+
+    @Override
+    public void onHostResume() {
         if (mapView!=null){
-            mapView.onDestroy();
-            Log.e("HERE", "removeMap: ");
+            mapView.onResume();
+            Log.e("HERE", "resumeMap: ");
         }
     }
 
+    @Override
+    public void onHostPause() {
+        if (mapView!=null){
+            mapView.onResume();
+            Log.e("HERE", "pasuseMap: ");
+        }
+
+    }
+
+    @Override
+    public void onHostDestroy() {
+        if (mapView!=null){
+            mapView.onDestroy();
+            Log.e("HERE", "DestoryMap: ");
+        }else {
+            Log.e("HERE", "remove2: ");
+
+        }
+    }
+    private void sendEvent(ReactContext reactContext, String eventName){
+        writableMap= Arguments.createMap();
+        writableMap.putString(LOCATIONNAME,LOCATIONNINFO);
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName,writableMap);
+    }
 }

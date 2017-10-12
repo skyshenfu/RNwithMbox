@@ -13,6 +13,7 @@ const ScreenWidth = Dimensions.get('window').width;
 
 @observer
 export default class NewsItem extends Component{
+
     render(){
         const {navigate}=this.props.nav
         console.log(this.props)

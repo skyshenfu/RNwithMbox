@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.reviewrn.pain.customcomponents.CustomAmapManager;
 import com.reviewrn.pain.customcomponents.CustomButton;
+import com.reviewrn.pain.customcomponents.CustomLifeAmapManager;
 import com.reviewrn.pain.customcomponents.CustomToast;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class MainPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
-                new CustomAmapManager()
+                new CustomLifeAmapManager()
         );
     }
 

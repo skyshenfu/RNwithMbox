@@ -12,4 +12,4 @@ let component={
         ...View.propTypes
     }
 }
-module.exports = requireNativeComponent('CMapCustom', component)
+export default requireNativeComponent('CMapCustom', component)

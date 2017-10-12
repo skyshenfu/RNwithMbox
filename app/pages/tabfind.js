@@ -9,6 +9,7 @@ import {
     DeviceEventEmitter
 } from 'react-native';
 import CToast from '../customs/CustomToast'
+import CButton from '../customs/CustomButton'
 const title='发现'
 
 export default class TabHomeComponent extends Component{
@@ -23,6 +24,9 @@ export default class TabHomeComponent extends Component{
             console.log(e)
         });
     }
+    componentWillUnmount(){
+        console.log('Home卸载了')
+    }
     render(){
         return(
 
@@ -31,6 +35,11 @@ export default class TabHomeComponent extends Component{
                         CToast.rnCallNative('Toast',CToast.LONG)
                     }}>
                     <View style={styles.buttonsgreen}/>
+                    </TouchableHighlight>
+                    <TouchableHighlight  onPress={()=>{
+                        CButton.rnCallNative()
+                    }}>
+                        <View style={styles.buttonsblue}/>
                     </TouchableHighlight>
                     <Text  />
                 </View>
@@ -49,5 +58,10 @@ const styles = StyleSheet.create({
         width :50,
         height :50,
         backgroundColor: '#00aa00'
+    },
+    buttonsblue: {
+        width :50,
+        height :50,
+        backgroundColor: '#44f2f4'
     }
 });

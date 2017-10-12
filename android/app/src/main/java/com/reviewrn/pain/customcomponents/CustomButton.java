@@ -16,7 +16,7 @@ import com.reviewrn.pain.extras.OriginActivity;
  * 创建者：韦小宝
  * 创建日期：2017/10/10
  * 版本号：1.0.0
- * 功能说明：
+ * 功能说明：测试在React端调用原生Activity
  */
 
 public class CustomButton extends ReactContextBaseJavaModule {
@@ -37,7 +37,6 @@ public class CustomButton extends ReactContextBaseJavaModule {
         Intent intent=new Intent(mContext, OriginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
-
     }
 
 }

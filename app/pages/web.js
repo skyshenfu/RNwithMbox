@@ -7,6 +7,13 @@ import {
 } from 'react-native';
 const {width, height} = Dimensions.get('window');
 export default class WebComponent extends Component{
+
+    componentWillMount(){
+        console.log('WebComponent装载了')
+    }
+    componentWillUnmount(){
+        console.log('WebComponent卸载了')
+    }
    render(){
        const {params}=this.props.navigation.state;
        return(

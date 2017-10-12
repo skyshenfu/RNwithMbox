@@ -103,6 +103,14 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+    signingConfigs {
+        releaseConfig {
+            keyPassword 'lude123'
+            storeFile file('/Users/LuDe/Desktop/ludesyt.jks')
+            keyAlias 'key'
+            storePassword 'lude123'
+        }
+    }
     splits {
         abi {
             reset()
@@ -115,6 +123,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.releaseConfig
         }
     }
     // applicationVariants are e.g. debug, release
