@@ -17,7 +17,9 @@ import com.amap.api.maps2d.model.MyLocationStyle;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -25,6 +27,9 @@ import com.reviewrn.pain.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 /**
  * 创建者：韦小宝
@@ -38,6 +43,8 @@ import java.util.Date;
  */
 
 public class CustomLifeAmapManager extends SimpleViewManager<MapView>  implements LifecycleEventListener{
+    private static final int RELOCATIONID=9527;
+    private static final String RELOCATIONNAME="reloc";
     private static final String NAME="CMapCustom";
     private AMap aMap;
     private AMapLocationClient mLocationClient = null;
@@ -219,5 +226,38 @@ public class CustomLifeAmapManager extends SimpleViewManager<MapView>  implement
         writableMap.putString(LOCATIONNAME,LOCATIONNINFO);
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName,writableMap);
+    }
+
+    /**
+     * @method 在rn中如果想调用native方法，必须实现的方法映射
+     * 在RN端发出的命令映射 其中RELOCATIONNAME的值要在js端使用
+     * @return
+     */
+    @Override
+    public Map<String, Integer> getCommandsMap() {
+        return MapBuilder.of(RELOCATIONNAME,RELOCATIONID);
+    }
+
+    /**
+     * @method
+     * @param root 在rn中如果想调用native方法，必须实现的方法接受
+     * @param commandId 通过commandID来对RN发出的指令进行区分并进行native调用
+     * @param args
+     */
+    @Override
+    public void receiveCommand(MapView root, int commandId, @Nullable ReadableArray args) {
+        switch (commandId){
+            case RELOCATIONID:
+                Log.e("HERE", "receiveCommand: "+commandId);
+                rnCallLocation();
+                break;
+        }
+    }
+    private void rnCallLocation(){
+        if (mLocationClient!=null){
+            mLocationClient.startLocation();
+        }
+        Log.e("HERE", "rnCallLocation: ");
+
     }
 }

@@ -3,6 +3,7 @@ package com.reviewrn.pain.customcomponents;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -17,6 +18,8 @@ import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.reviewrn.pain.MainActivity;
@@ -24,6 +27,9 @@ import com.reviewrn.pain.extras.OriginActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 /**
  * 创建者：韦小宝
@@ -37,6 +43,8 @@ import java.util.Date;
 
 public class CustomAmapManager extends SimpleViewManager<MapView> {
     private static final String NAME="CMapCustom";
+    private static final int RELOCATIONID=9527;
+    private static final String RELOCATIONNAME="reloc";
     private AMap aMap;
     private AMapLocationClient mLocationClient = null;
     private Context mContext;
@@ -178,6 +186,13 @@ public class CustomAmapManager extends SimpleViewManager<MapView> {
             mapView.onDestroy();
             Log.e("HERE", "removeMap: ");
         }
+    }
+    private void rnCallLocation(){
+        if (mLocationClient!=null){
+            mLocationClient.startLocation();
+        }
+        Log.e("HERE", "rnCallLocation: ");
+
     }
 
 }

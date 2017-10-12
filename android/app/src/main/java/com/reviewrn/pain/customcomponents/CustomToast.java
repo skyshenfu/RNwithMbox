@@ -1,6 +1,7 @@
 package com.reviewrn.pain.customcomponents;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -46,7 +47,6 @@ public class CustomToast extends ReactContextBaseJavaModule {
     public void rnCallNative(String msg,int duration){
         Toast.makeText(mContext,msg,duration).show();
     }
-
     @Nullable
     @Override
     public Map<String, Object> getConstants() {
