@@ -3,32 +3,57 @@ import {postTogainData,buidPostRequest,BASE_URL} from '../utlis/netUtils'
 export default class Store{
     @observable
     datas=[];
+    @observable
+    footertype=0
+    @observable
+    headertype=0
+    allpages=1;
+    @observable
+    refreshing=false
+    @observable
+    currentpage=1;
+    loadPage=()=>{
+        console.log("44444444"+this.currentpage)
+            fetch("http://all-help.com/mobile/article/getArticleListByCid.json",buidPostRequest('classid=1&page='+this.currentpage))
+                .then(response => response.json())
+                .then(this._dealWithData)
+                .catch((error) => {
+                    console.error(error);
+                    this.stopRefreshing();
+                });
+        }
 
-
-    @action
-    replace=(items)=>{
-        this.datas.splice(0,this.datas.length);
-        this.datas=items
+    stopRefreshing() {
+        if (this.refreshing) {
+            this.refreshing = false
+        }
     }
 
-    @action
-    addItem=(item)=>{
-        this.datas.push(item)
-        console.log(this.datas)
+    _dealWithData=(rj)=>{
+        this.currentpage=rj.data.page
+        this.stopRefreshing()
+        if (this.currentpage==1){
+            this.datas=  rj.data.dataList
+            this.allpages=rj.data.totalPage
+        }else if(this.currentpage<=this.allpages){
+            this.datas=this.datas.slice().concat(rj.data.dataList)
+        }
     }
-    clear=action(() => {
-        this.datas.splice(0,this.datas.length);
-    })
     @action
-    fetchNewsList=()=>{
-        fetch("http://all-help.com/mobile/article/getArticleListByCid.json",buidPostRequest('classid=1&page=2'))
-            .then(response => response.json())
-            .then((rj)=>{
-               this.datas= rj.data.dataList
-                console.log(rj.data.dataList)
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+    refresh=()=>{
+        this.refreshing=true
+        console.log("3333333")
+        this.currentpage=1
+        this.loadPage()
     }
+    @action
+    loadMore=()=>{
+        console.log("2222222")
+        this.currentpage=this.currentpage+1;
+        if (this.currentpage<=this.allpages){
+            this.loadPage()
+
+        }
+    }
+
 }

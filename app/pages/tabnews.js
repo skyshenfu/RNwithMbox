@@ -16,16 +16,17 @@ import NewsItem from '../components/NewsItem'
 import Store from '../stores/store';
 import {observable,action}from 'mobx'
 import {observer,Provider} from 'mobx-react/native'
+import ListComponent from '../components/ListComponent'
 const title='新闻'
 @observer
 export default class TabNewsComponent extends Component {
     dataM=new Store()
     press1=()=>{
-        this.dataM.fetchNewsList()
+        this.dataM.refresh()
+    }
+    press2=()=>{
+        this.dataM.loadMore()
     };
-    _renderItem=({item}) => (
-        <NewsItem info={{item}} nav={this.props.navigation}/>
-    );
     static navigationOptions = {
         header: null,
         tabBarLabel: title
@@ -42,7 +43,15 @@ export default class TabNewsComponent extends Component {
                     </View>
 
                 </TouchableHighlight>
-                <FlatList data={this.dataM.datas.slice()} renderItem={this._renderItem} keyExtractor={(item,index)=>item.aid}/>
+                <TouchableHighlight onPress={this.press2}>
+
+                    <View  style={styles.buttons1}>
+                        <Text>{this.dataM.datas.length}</Text>
+                    </View>
+
+                </TouchableHighlight>
+                <ListComponent source={this.dataM.datas.slice()} nav={this.props.navigation} store={this.dataM}/>
+
             </View>
         );
     }
@@ -70,5 +79,10 @@ const styles = StyleSheet.create({
         width :50,
         height :50,
         backgroundColor: '#f96060'
+    },
+    buttons1: {
+        width :50,
+        height :50,
+        backgroundColor: '#006060'
     }
 });
