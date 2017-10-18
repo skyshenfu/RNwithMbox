@@ -4,16 +4,18 @@ export default class Store{
     @observable
     datas=[];
     @observable
-    footertype=0
+    footertype=1
     @observable
-    headertype=0
+    headertype=1
     allpages=1;
     @observable
     refreshing=false
     @observable
     currentpage=1;
+
+
+
     loadPage=()=>{
-        console.log("44444444"+this.currentpage)
             fetch("http://all-help.com/mobile/article/getArticleListByCid.json",buidPostRequest('classid=1&page='+this.currentpage))
                 .then(response => response.json())
                 .then(this._dealWithData)
@@ -26,6 +28,12 @@ export default class Store{
     stopRefreshing() {
         if (this.refreshing) {
             this.refreshing = false
+        }
+        if (this.headertype==2){
+            this.headertype=1
+        }
+        if (this.footertype==2){
+            this.footertype=1
         }
     }
 
@@ -41,14 +49,15 @@ export default class Store{
     }
     @action
     refresh=()=>{
+        this.headertype=2
         this.refreshing=true
-        console.log("3333333")
+        console.log(this.headertype+"&&&&&&&&&&&&&&&&&&&&&&&&&&")
         this.currentpage=1
         this.loadPage()
     }
     @action
     loadMore=()=>{
-        console.log("2222222")
+        this.footertype=2
         this.currentpage=this.currentpage+1;
         if (this.currentpage<=this.allpages){
             this.loadPage()

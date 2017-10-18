@@ -12,16 +12,18 @@ import {
 import HeaderComponent from '../components/HeaderComponent'
 import FooterComponent from '../components/FooterComponent'
 import NewsItem from '../components/NewsItem'
+import {observer,Provider,inject} from 'mobx-react/native'
 const ScreenWidth = Dimensions.get('window').width;
+@observer
 export default class ListComponent extends Component {
-    _returnheader=(headertype)=>{
+    _returnheader=()=>{
         return (
-            <HeaderComponent type={headertype}/>
+            <HeaderComponent store={this.props.store}/>
         )
     }
-    _returnfooter=(footertype)=>{
+    _returnfooter=()=>{
         return(
-            <FooterComponent type={footertype}/>
+            <FooterComponent store={this.props.store}/>
         )
     }
     componentWillMount(){
@@ -31,15 +33,15 @@ export default class ListComponent extends Component {
         <NewsItem info={{item}} nav={this.props.nav}/>
     );
     render() {
-      return (
+        return (
               <FlatList data={this.props.store.datas}
                         renderItem={this._renderItem}
                         keyExtractor={(item,index)=>item.aid}
-                        ListHeaderComponent={this._returnheader(2)}
-                        ListFooterComponent={this._returnfooter(1)}
+                        ListHeaderComponent={this._returnheader}
+                        ListFooterComponent={this._returnfooter}
                         onRefresh={()=>{
                             console.log("走刷新了")
-                            setTimeout(this.props.store.refresh,500)
+                            this.props.store.refresh()
                         }
                         }
                         refreshing={this.props.store.refreshing}
@@ -48,7 +50,9 @@ export default class ListComponent extends Component {
                                 console.log("到达底部")
                             this.props.store.loadMore()
                             }
-                        }/>
+                        }
+                        extraData={this.props.store}
+              />
       )
 
 

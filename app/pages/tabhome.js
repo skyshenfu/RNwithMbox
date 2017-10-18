@@ -3,7 +3,6 @@ import {
     StyleSheet,
     Text,
     View,
-    FlatList,
     TouchableHighlight,
     Dimensions,
     UIManager,
@@ -62,8 +61,14 @@ const styles = StyleSheet.create({
     },
     map: {
         width:ScreenWidth,
-        height:ScreenHeight/2
+        height:ScreenHeight/2,
+        marginTop:50
     },
+    mapios:{
+        width:ScreenWidth,
+        height:ScreenHeight/2,
+    }
+    ,
     buttonsblue: {
         width :50,
         height :50,

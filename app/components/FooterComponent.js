@@ -7,28 +7,36 @@ import {
     Image,
     Dimensions
 } from 'react-native';
+import {observer,Provider,inject} from 'mobx-react/native'
 const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
+
+@observer
 export default class FooterComponent extends Component {
     render() {
-        if (this.props.type.footertype==1){
-            return (
-                <View style={stylesheets.footerNormal}>
-                    <Text>正常头</Text>
-                </View>
-            )
-        }else {
-            return (
-                <View style={stylesheets.footerNormal}>
-                    <Text>刷新头</Text>
-                </View>
-            )
-        }
+        console.log(this.props)
+        return(
+            <View style={this.props.store.headertype==1 ? stylesheets.footerNormal : stylesheets.footerRefreshing}/>
+        )
 
 
     }
 }
 const stylesheets=StyleSheet.create({
     footerNormal :{
-        width :ScreenWidth
+        width :ScreenWidth,
+        height :0,
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'#f96060'
+    },
+    footerRefreshing :{
+        width :ScreenWidth,
+        height :ScreenHeight/10,
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'#60f'
     }
 })
