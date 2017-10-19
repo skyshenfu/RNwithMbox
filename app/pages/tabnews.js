@@ -21,9 +21,7 @@ const title='新闻'
 @observer
 export default class TabNewsComponent extends Component {
     dataM=new Store()
-    press1=()=>{
-        this.dataM.refresh()
-    }
+
     press2=()=>{
         this.dataM.loadMore()
     };
@@ -31,9 +29,11 @@ export default class TabNewsComponent extends Component {
         header: null,
         tabBarLabel: title
     };
+    press1=()=>{
+        this.dataM.refresh()
+    }
     render() {
-        console.log(this.props)
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
         return (
             <View style={styles.container}>
                 <TouchableHighlight onPress={this.press1}>

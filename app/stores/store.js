@@ -51,7 +51,6 @@ export default class Store{
     refresh=()=>{
         this.headertype=2
         this.refreshing=true
-        console.log(this.headertype+"&&&&&&&&&&&&&&&&&&&&&&&&&&")
         this.currentpage=1
         this.loadPage()
     }
