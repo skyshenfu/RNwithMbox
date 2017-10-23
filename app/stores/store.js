@@ -12,6 +12,8 @@ export default class Store{
     refreshing=false
     @observable
     currentpage=1;
+    @observable
+    istop=true;
 
 
 
@@ -62,6 +64,10 @@ export default class Store{
             this.loadPage()
 
         }
+    }
+    @action
+    changeTop=()=>{
+        this.istop=!this.istop
     }
 
 }
